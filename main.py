@@ -9,4 +9,9 @@ from PIL import Image
 
 print("Hello")
 
-im = Image.open('path')
+imagem = Image.open('assets/lena.tif')
+pixels = imagem.load()
+print(imagem.size)
+print(pixels[0,0])
+pixels[0,0]=0
+imagem.save('teste.jpg')
