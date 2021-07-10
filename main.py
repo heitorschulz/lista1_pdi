@@ -331,24 +331,32 @@ def main():
                                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                                 ]
 
-    imagem = Image.open('assets/ruidosa1.tif')
-    filtro_mediana(imagem, 3, 'output/ruidosa1')
-    filtro_mediana(imagem, 11, 'output/ruidosa1')
-    #convolucao3x3(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa1_Passa-baixas_3x3")
-    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa1_Passa-baixas_3x3_n",3)
-    convolucaonxn(imagem,Filtro_Passa_Baixa_11x11,Constante_Passa_Baixa_11x11,"ruidosa1_Passa-baixas_11x11_n",11)
+    # imagem = Image.open('assets/ruidosa1.tif')
+    # filtro_mediana(imagem, 3, 'output/ruidosa1')
+    # filtro_mediana(imagem, 11, 'output/ruidosa1')
+    # #convolucao3x3(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa1_Passa-baixas_3x3")
+    # convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa1_Passa-baixas_3x3_n",3)
+    # convolucaonxn(imagem,Filtro_Passa_Baixa_11x11,Constante_Passa_Baixa_11x11,"ruidosa1_Passa-baixas_11x11_n",11)
 
-    imagem = Image.open('assets/ruidosa2.tif')
-    filtro_mediana(imagem, 3, 'output/ruidosa2')
-    filtro_mediana(imagem, 5, 'output/ruidosa2')
-    filtro_mediana(imagem, 7, 'output/ruidosa2')
-    filtro_mediana(imagem, 9, 'output/ruidosa2')
-    filtro_mediana(imagem, 11, 'output/ruidosa2')
+    # imagem = Image.open('assets/ruidosa2.tif')
+    # filtro_mediana(imagem, 3, 'output/ruidosa2')
+    # filtro_mediana(imagem, 5, 'output/ruidosa2')
+    # filtro_mediana(imagem, 7, 'output/ruidosa2')
+    # filtro_mediana(imagem, 9, 'output/ruidosa2')
+    # filtro_mediana(imagem, 11, 'output/ruidosa2')
 
-    #convolucao3x3(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa2_Passa-baixas_3x3")
-    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa2_Passa-baixas_3x3_n",3)
-    convolucaonxn(imagem,Filtro_Passa_Baixa_11x11,Constante_Passa_Baixa_11x11,"ruidosa2_Passa-baixas_11x11_n",11)
+    # #convolucao3x3(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa2_Passa-baixas_3x3")
+    # convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"ruidosa2_Passa-baixas_3x3_n",3)
+    # convolucaonxn(imagem,Filtro_Passa_Baixa_11x11,Constante_Passa_Baixa_11x11,"ruidosa2_Passa-baixas_11x11_n",11)
 
+    # imagem = Image.open('assets/lena_ruido.jpg')
+    # convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"lena_ruido_Passa-baixas_3x3_n",3)
+    # convolucaonxn(imagem,Filtro_Passa_Baixa_11x11,Constante_Passa_Baixa_11x11,"lena_ruido_Passa-baixas_11x11_n",11)
+    # filtro_mediana(imagem, 3, 'output/lena_ruido')
+    # filtro_mediana(imagem, 11, 'output/lena_ruido')
+
+    imagem = Image.open('output/lena_ruido_filtro_mediana11x11.jpg')
+    mascara_de_nitidez(imagem)
     print("Fim do programa")
 
 if __name__ == '__main__':
