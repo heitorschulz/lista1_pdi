@@ -6,6 +6,7 @@ Matricula: 2016101758
 
 
 from PIL import Image
+import math
 
 
 def isKthBitSet(n, k):
@@ -13,6 +14,14 @@ def isKthBitSet(n, k):
         return True
     else:
         return False
+
+def rotaciona_array_180_graus(array_entrada, m, n, array_saida):
+    for i in range(m):
+        for j in range(n):
+            array_saida[i][(n-1)-j]=array_entrada[(m-1)-i][j]
+
+    print(array_saida)
+    print(array_entrada)
 
 def fatiamento(imagem):
 
@@ -90,6 +99,61 @@ def fatiamento(imagem):
 
         img.save(filenameOutput+format(f, '02d')+'.jpg')
 
+def fatiamento1(imagem, limite_inferior, limite_superior):
+    
+    if(limite_inferior < 0 or  limite_inferior > 255):
+        print("Limite inferior fora do intervalo [0-255]!!")
+        return
+    if(limite_superior < 0 or  limite_superior > 255):
+        print("Limite superior fora do intervalo [0-255]!!")
+        return
+    if(limite_superior<limite_inferior):
+        print("Limite superior menor que limite inferior!!")
+        return
+
+
+    pixels = imagem.load()
+    filenameOutput = 'output/fatiamento01'
+
+    img = Image.new(imagem.mode, imagem.size, color = 'black')
+    pixels_n= img.load()
+
+    for i in range(imagem.size[0]):
+        for j in range(imagem.size[1]):
+            if(pixels[i,j] >= limite_inferior and pixels[i,j] <= limite_superior):
+                pixels_n[i,j]=255
+            else:
+                pixels_n[i,j]=0
+
+    img.save(filenameOutput+'.jpg')
+
+def fatiamento2(imagem, limite_inferior, limite_superior):
+    
+    if(limite_inferior < 0 or  limite_inferior > 255):
+        print("Limite inferior fora do intervalo [0-255]!!")
+        return
+    if(limite_superior < 0 or  limite_superior > 255):
+        print("Limite superior fora do intervalo [0-255]!!")
+        return
+    if(limite_superior<limite_inferior):
+        print("Limite superior menor que limite inferior!!")
+        return
+
+    pixels = imagem.load()
+    filenameOutput = 'output/fatiamento02'
+
+    img = Image.new(imagem.mode, imagem.size, color = 'black')
+    pixels_n= img.load()
+
+    for i in range(imagem.size[0]):
+        for j in range(imagem.size[1]):
+            if(pixels[i,j] >= limite_inferior and pixels[i,j] <= limite_superior):
+                pixels_n[i,j]=pixels[i,j] ##255
+            else:
+                pixels_n[i,j]=0
+
+    img.save(filenameOutput+'.jpg')
+
 
 ##
 def convolucao3x3(imagem,filtro,constante,nome):
@@ -142,7 +206,9 @@ def convolucaonxn(imagem,filtro,constante,nome, tamanho_filtro):
     pixels = imagem.load()
 
     ##Rotaciona 180 Graus o filtro
-
+    filtro_out = filtro
+    rotaciona_array_180_graus(filtro,tamanho_filtro,tamanho_filtro,filtro_out)
+    filtro = filtro_out
     ##Realiza a convulação
     filenameConv = 'output/convolucao_'
     img = Image.new(imagem.mode, imagem.size, color = 'black')
@@ -181,7 +247,13 @@ def convolucaonxn(imagem,filtro,constante,nome, tamanho_filtro):
                 
                 coluna = initCounter
                 linha+=1
-                
+            
+            # if(resultado>255):
+            #     resultado=255
+            # if(resultado<0):
+            #     resultado=0
+            ##print(resultado*constante)
+
             pixels_n[i,j]=int(resultado*constante)
 
     img.save(filenameConv+nome+'.jpg')
@@ -262,20 +334,41 @@ def filtro_mediana(imagem,tamanho_filtro,nome):
 
     img.save(nome+'_filtro_mediana'+str(tamanho_filtro)+'x'+str(tamanho_filtro)+'.jpg')
 
+def exercicio3(imagem,nome):
+    pixels_o = imagem.load()
+
+    comprimento= math.floor(imagem.size[0]/2)
+    altura=math.ceil(imagem.size[1]/2)
+
+    img = Image.new(imagem.mode,(comprimento, altura) , color = 'black')
+    pixels_n= img.load()
+
+    for i in range(comprimento):
+        for j in range(altura):
+
+            pixels_n[i,j]=pixels_o[(2*i),(2*j+1)]
+
+    img.save('output/'+nome+'.jpg')
+
 
 def main():
 
     print("Iniciando programa")
-    imagem = Image.open('assets/Fig10.15(a).jpg')
+    #imagem = Image.open('assets/Fig10.15(a).jpg')
 
-    # print("Fatiamento...")
+    imagem = Image.open('assets/frexp_1.png')
+
+    exercicio3(imagem,'3_antes_pb')
+
+    #print("Fatiamento...")
     # print(imagem.size)
-    # fatiamento(imagem)
-
+    #limite_inferior = 145
+    #limite_superior = 210
+    #fatiamento1(imagem, limite_inferior, limite_superior)
+    #fatiamento2(imagem, limite_inferior, limite_superior)
 
     print("Convolução...")
-    imagem = Image.open('assets/lena.tif')
-
+    #imagem = Image.open('assets/lena.tif')
 
     #Filtro: Original
     Constante_Original_3x3 = 1
@@ -304,16 +397,29 @@ def main():
     #Filtro: Laplaciano 45Graus 3x3
     Constante_Laplaciano_3x3_45g = 1
     Filtro_Laplaciano_3x3_45g = [[-1, -1, -1],
-                                 [-1, 8, -1],
-                                 [-1, -1, -1]]        
+                                 [-1,  8, -1],
+                                 [-1, -1, -1]] 
+
+    Constante_Teste_3x3 = 1
+    Filtro_Teste_3x3 = [[0, 1, 2],
+                           [3, 4, 5],
+                           [6, 7, 8]]       
 
     #convolucao3x3(imagem,Filtro_Original_3x3,Constante_Original_3x3,"Original_3x3")
     #convolucao3x3(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"Passa-baixas_3x3")
     #convolucao3x3(imagem,Filtro_Gaussiano_3x3,Constante_Gaussiano_3x3,"Gaussiano_3x3")
     #convolucao3x3(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"Laplaciano_3x3")
     #convolucao3x3(imagem,Filtro_Laplaciano_3x3_45g,Constante_Laplaciano_3x3_45g,"Laplaciano_45g_3x3")
+    
+    #convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"Passa-baixas_3x3",3)
+    convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"ex03",3)
 
-    #mascara_de_nitidez(imagem)
+    imagem = Image.open('output/convolucao_ex03.jpg')
+
+    exercicio3(imagem,'3_apos_pb')
+    
+    return 0
+    mascara_de_nitidez(imagem)
 
 
     #Filtro: Passa-Baixa 3x3
