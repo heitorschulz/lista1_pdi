@@ -1,0 +1,53 @@
+1) Uma imagem de 1024 x 1024 pixels cobre uma região de 200 x 200 m2.
+a) Quais são as dimensões dos pixels?
+
+200 m / 1024 pixels = 0.1953 m
+Portanto, cada pixel tem a dimensão de 0.1953m x 0.1953m (0.03814 m2)
+
+b) Qual é a profundidade da imagem se os valores dos pixels variam de 0 a 65535
+(A imagem é monocromática)?
+
+log2(65535+1) = 16 bits
+
+Portanto, a profundidade de cor da imagem é 16 bits por pixel (16 bpp)
+
+c) Outra imagem da mesma região, com pixels de 0,1 x 0,1 m2, teria maior ou
+menor resolução espacial? Quantos pixels teriam nesta imagem?
+
+200m (tamanho região)/0,1(tamanho pixel)= 2000 pixels...
+200 [m] / 0,1 [m/pixel] = 2000 pixels
+
+2000 pixels / 200m = 10 pixels/m (outra imagem)
+1024 pixels / 200m = 5.12 pixels/m (imagem anterior)
+
+Portanto, essa outra imagem teria uma resolução espacial maior (10 pixels/m frente 5.12 pixels/m) . 
+Esta imagem teria 2000 pixels. 
+
+
+
+2) Qual seria o resultado de uma imagem filtrada no domínio do espaço por um
+filtro de média de mesmas dimensões da imagem (considere que não seja feita
+preenchimentos com zero na imagem)?
+
+Filtrando uma imagem no domínio do espaço com um filtro de média de mesmas dimensões da imagem teriamos 
+um efeito de "borramento" extremamente forte, a ponto de deixar a imagem praticamente com apenas "uma" cor (algo em torno da média 
+do valor da imagem inteira, dado que tem o efeito da borda), perdendo as informações e características originais.
+
+
+3) É possível fazer alguma operação não linear por meio de convolução? Explique
+sua resposta. É possível realizar filtragem no domínio da frequência com um
+filtro mediana? Se não, o que fazer neste caso? Neste sentido, a máscara que
+implementa o filtro mediana como pode ser categorizado? Explique.
+
+Não é possível fazer uma operação não linear por meio de convolução. Apesar de ser usado um mecanismo 
+semelhante para, por exemplo, filtragem por mediana, não pode ser chamado de convolução.
+
+Não é possível realizar uma filtragem no domínio da frequência com um filtro de mediana pois não é um filtro linear.
+Sabemos que é possível obter um filtro equivalente no domínio espacial para o domínio da frequência para filtros lineares, 
+mas o contrário não é verdade, não sendo possível fazer o mesmo para filtros não-lineares, pois não há um equivalente.
+Neste caso, a solução é encontrar filtros lineares que se aproximem da solução desejada para trabalhar no domínio da frequência, 
+ou usar o filtro de mediana no domínio espacial.
+
+Nente sentido, a máscara do filtro mediana não existe, pois não é linear.
+
+
