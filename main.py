@@ -411,7 +411,7 @@ def main():
     #convolucao3x3(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"Laplaciano_3x3")
     #convolucao3x3(imagem,Filtro_Laplaciano_3x3_45g,Constante_Laplaciano_3x3_45g,"Laplaciano_45g_3x3")
     
-    #convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"Passa-baixas_3x3",3)
+    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"Passa-baixas_3x3",3)
     convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"ex03",3)
 
     imagem = Image.open('output/convolucao_ex03.jpg')
