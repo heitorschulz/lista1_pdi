@@ -128,7 +128,7 @@ def main():
                                  [-1,  8, -1],
                                  [-1, -1, -1]] 
 
-    imagem = Image.open('assets/frexp_1.png')
+    imagem = Image.open('assets/lena.tif')
 
     convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"2A-Passa-baixas",3)
     convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"2B-Laplaciano",3)
