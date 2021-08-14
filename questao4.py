@@ -11,15 +11,13 @@ import cmath
 from math import sqrt, exp
 
 
-def exercicio4(imagem):
+def exercicio4(imagem1, imagem2):
 
+    
     plt.figure(figsize=(6.4*5, 4.8*5), constrained_layout=False)
 
-    img_c1 = cv2.imread("assets/lena.tif", 0)
-    img2_c1 = cv2.imread("assets/elaine.tiff", 0)
-
-    # img_c1 = cv2.imread("assets/elaine.tiff", 0)
-    # img2_c1 = cv2.imread("assets/lena.tif", 0)
+    img_c1 = imagem1
+    img2_c1 = imagem2
 
     img_c2 = np.fft.fft2(img_c1)
     img2_c2 = np.fft.fft2(img2_c1)
@@ -28,8 +26,8 @@ def exercicio4(imagem):
     img2_c3 = np.fft.fftshift(img2_c2)
 
     plt.subplot(231), plt.imshow(img_c1, "gray"), plt.title("Original Image")
-    plt.subplot(232), plt.imshow(np.log(np.abs(img_c2)), "gray"), plt.title("Spectrum Original")
-    plt.subplot(233), plt.imshow(np.angle(img_c2), "gray"), plt.title("Phase Angle Original")
+    plt.subplot(232), plt.imshow(np.log(np.abs(img_c3)), "gray"), plt.title("Spectrum Original")
+    plt.subplot(233), plt.imshow(np.angle(img_c3), "gray"), plt.title("Phase Angle Original")
 
     # Muda a fase sem mudar o módulo
     for index in range(512*512):
@@ -51,12 +49,17 @@ def exercicio4(imagem):
     img_c5 = np.fft.ifft2(img_c4)
 
     plt.subplot(234), plt.imshow(np.abs(img_c5), "gray"), plt.title("Processed Image")
-
+   
     plt.show()
 
 def main():
 
-    exercicio4("")
+    img1=cv2.imread("assets/lena.tif", 0)
+    img2=cv2.imread("assets/elaine.tiff", 0)
+
+    exercicio4(img1,img2)
+    exercicio4(img2,img1)
+
     return
 
 
