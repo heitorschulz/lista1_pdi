@@ -8,7 +8,7 @@ Matricula: 2016101758
 from PIL import Image
 import math
 
-def fatiamento1(imagem, limite_inferior, limite_superior):
+def fatiamento(imagem, limite_inferior, limite_superior):
     
     if(limite_inferior < 0 or  limite_inferior > 255):
         print("Limite inferior fora do intervalo [0-255]!!")
@@ -22,7 +22,7 @@ def fatiamento1(imagem, limite_inferior, limite_superior):
 
 
     pixels = imagem.load()
-    filenameOutput = 'output/fatiamento01'
+    filenameOutput = 'output/1-fatiamento01'
 
     img = Image.new(imagem.mode, imagem.size, color = 'black')
     pixels_n= img.load()
@@ -43,7 +43,7 @@ def main():
 
     limite_inferior = 145
     limite_superior = 210
-    fatiamento1(imagem, limite_inferior, limite_superior)
+    fatiamento(imagem, limite_inferior, limite_superior)
     return
 
 

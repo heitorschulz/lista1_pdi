@@ -31,11 +31,13 @@ def corrige_valores_por_shift_e_normalizacao(array):
 def corrige_valores_por_corte(array):
     return np.clip(array,0,255)
 
+# Rotaciona o filtro em 180 para fazer a convolução depois
 def rotaciona_array_180_graus(array_entrada, m, n, array_saida):
     for i in range(m):
         for j in range(n):
             array_saida[i][(n-1)-j]=array_entrada[(m-1)-i][j]
 
+#Realiza a convolução NxN
 def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro, correcao):
 
     pixels = np.asarray(imagem,dtype='float64')
@@ -84,19 +86,18 @@ def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro, correcao):
             
             pixels_n[i,j]=resultado*constante
     
-    print(pixels_n)
     if(correcao):
         pixels_n = corrige_valores_por_shift_e_normalizacao(pixels_n)
     else:
-        pixels_n = corrige_valores_por_corte(pixels_n)
-    print(pixels_n)        
+        pixels_n = corrige_valores_por_corte(pixels_n)    
 
     img = Image.fromarray(np.uint8(pixels_n))
     img.save(filenameConv+nome+'.jpg')
 
+
 def mascara_de_nitidez(imagem, nome):
 
-    pixels_o = imagem.load()
+    pixels_o = np.asarray(imagem,dtype='float64')
 
     #Passo 1: Borrar imagem original
     #Filtro: Passa-Baixa 3x3
@@ -106,27 +107,30 @@ def mascara_de_nitidez(imagem, nome):
                               [1, 1, 1]]
     convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"tmp_convolucao_Borrado_3x3",3,False)
     borrado = Image.open('output/tmp_convolucao_Borrado_3x3.jpg')
-    pixels_b= borrado.load()
+    pixels_b = np.asarray(borrado,dtype='float64')
 
     #Passo 2: Subtrair a imagem borrada da imagem original, obtendo a máscara
     mascara = Image.new(imagem.mode, imagem.size, color = 'black')
-    pixels_m = mascara.load()
+    pixels_m = np.asarray(mascara,dtype='float64')
     for i in range(imagem.size[0]):
         for j in range(imagem.size[1]):
             pixels_m[i,j]=pixels_o[i,j]-pixels_b[i,j]
+    
+    mascara = Image.fromarray(np.uint8(corrige_valores_por_corte(pixels_m)))
     mascara.save('output/tmp_mascara_nitidez'+'.jpg')
     
     #Passo 3: Adicionar uma porção ponderada da máscara à imagem original
     img_out = Image.new(imagem.mode, imagem.size, color = 'black')
-    pixels_out = img_out.load()
+    pixels_out = np.asarray(img_out,dtype='float64')
 
     constante = 1
     for i in range(imagem.size[0]):
         for j in range(imagem.size[1]):
-            pixels_out[i,j]=pixels_o[i,j] + int(constante * pixels_m[i,j])
+            pixels_out[i,j]=pixels_o[i,j] + (constante * pixels_m[i,j])
+    
+    pixels_out = corrige_valores_por_corte(pixels_out)
+    img_out = Image.fromarray(np.uint8(pixels_out))
     img_out.save('output/'+nome+'.jpg')
-
-
 
 def main():
     #Filtro: Passa-Baixa 3x3
@@ -155,9 +159,12 @@ def main():
 
     imagem = Image.open('assets/lena.tif')
 
-    #convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"2A-Passa-baixas",3,False)
-    convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"2B-Laplaciano",3,True)
-    #mascara_de_nitidez(imagem, "2C-Mascara-de-Nitidez")
+    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"2A-Passa-baixas",3,False)
+    convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"2B.1-Laplaciano_sem_correcao",3,False)
+    convolucaonxn(imagem,Filtro_Laplaciano_3x3_45g,Constante_Laplaciano_3x3_45g,"2B.2-Laplaciano-45G_sem_correcao",3,False)
+    convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"2B.3-Laplaciano",3,True)
+    convolucaonxn(imagem,Filtro_Laplaciano_3x3_45g,Constante_Laplaciano_3x3_45g,"2B.4-Laplaciano-45G",3,True)
+    mascara_de_nitidez(imagem, "2C-Mascara-de-Nitidez")
     return
 
 if __name__ == '__main__':

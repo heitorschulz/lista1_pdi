@@ -20,17 +20,31 @@ def exercicio3(imagem,nome):
 
     for i in range(comprimento):
         for j in range(altura):
-
             pixels_n[i,j]=pixels_o[(2*i),(2*j+1)]
 
     img.save('output/'+nome+'.jpg')
 
+def proposta_solucao(imagem,nome):
+    from questao2 import convolucaonxn
+
+    Constante_media_5x5 = 1/25
+    Filtro_media_3x3 = [[1, 1, 1,1,1],
+                        [1, 1, 1,1,1],
+                        [1, 1, 1,1,1],
+                        [1, 1, 1,1,1],
+                        [1, 1, 1,1,1],]
+
+    convolucaonxn(imagem,Filtro_media_3x3,Constante_media_5x5,"tmp_"+nome,5,False)
+
+    img_tmp = Image.open('output/tmp_'+nome+'.jpg')
+    exercicio3(img_tmp,nome)
+    proposta_solucao
 
 def main():
 
     imagem = Image.open('assets/frexp_1.png')
-    exercicio3(imagem,"Exercicio03-A")
-
+    exercicio3(imagem,"03-A")
+    proposta_solucao(imagem,"03-B")
 
     return
 

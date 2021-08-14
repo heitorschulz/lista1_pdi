@@ -63,8 +63,6 @@ def convolucaonxn(imagem,filtro,constante,nome, tamanho_filtro):
 
     img.save(filenameConv+nome+'.jpg')
 
-    # print('PSNR'+ nome + '.jpg / Ruidosa.tif:')
-    # calculoPSNR(img,imagem)
     img_original = Image.open('assets/original.tif')
     print('\nPSNR original.tif /'+ nome + '.jpg:')
     calculoPSNR(img_original,img)
@@ -112,8 +110,6 @@ def filtro_mediana(imagem,tamanho_filtro,nome):
 
     img.save('output/'+nome+'.jpg')
 
-    # print('PSNR'+ nome + '.jpg / Ruidosa.tif:')
-    # calculoPSNR(img,imagem)
     img_original = Image.open('assets/original.tif')
     print('\nPSNR original.tif /'+ nome + '.jpg:')
     calculoPSNR(img_original,img)
@@ -163,19 +159,19 @@ def main():
     print('\nPSNR original.tif / Ruidosa1.tif:')
     calculoPSNR(img_original,imagem)
 
-    convolucaonxn(imagem,Filtro_media_3x3,Constante_media_3x3,"ruidosa1_media_3x3",3)
-    convolucaonxn(imagem,Filtro_media_11x11,Constante_media_11x11,"ruidosa1_media_11x11",11)
-    filtro_mediana(imagem, 3, 'ruidosa1_mediana_3x3')
-    filtro_mediana(imagem, 11, 'ruidosa1_mediana_11x11')
+    convolucaonxn(imagem,Filtro_media_3x3,Constante_media_3x3,"6A.1-ruidosa1_media_3x3",3)
+    convolucaonxn(imagem,Filtro_media_11x11,Constante_media_11x11,"6A.2-ruidosa1_media_11x11",11)
+    filtro_mediana(imagem, 3, '6A.3-ruidosa1_mediana_3x3')
+    filtro_mediana(imagem, 11, '6A.4-ruidosa1_mediana_11x11')
 
 
     imagem = Image.open('assets/ruidosa2.tif')
     print('\nPSNR original.tif / Ruidosa2.tif:')
     calculoPSNR(img_original,imagem)
-    convolucaonxn(imagem,Filtro_media_3x3,Constante_media_3x3,"ruidosa2_media_3x3",3)
-    convolucaonxn(imagem,Filtro_media_11x11,Constante_media_11x11,"ruidosa2_media_11x11",11)
-    filtro_mediana(imagem, 3, 'ruidosa2_mediana_3x3')
-    filtro_mediana(imagem, 11, 'ruidosa2_mediana_11x11')
+    convolucaonxn(imagem,Filtro_media_3x3,Constante_media_3x3,"6B.1-ruidosa2_media_3x3",3)
+    convolucaonxn(imagem,Filtro_media_11x11,Constante_media_11x11,"6B.2-ruidosa2_media_11x11",11)
+    filtro_mediana(imagem, 3, '6B.3-ruidosa2_mediana_3x3')
+    filtro_mediana(imagem, 11, '6B.4-ruidosa2_mediana_11x11')
 
     return
 
