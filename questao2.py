@@ -6,16 +6,39 @@ Matricula: 2016101758
 """
 
 from PIL import Image
+import numpy as np
 import math
+
+
+# Corrige os valores do array para o intervalo de [0,255] por deslocamento e normalização
+# Desloca o array pelo menor valor, dessa forma o valor mínimo vai para 0.
+# E por fim normaliza pelo maior valor, dessa forma o valor máximo vai para 255.
+def corrige_valores_por_shift_e_normalizacao(array):
+    valor_minimo = np.amin(array)
+   
+    if valor_minimo < 0:
+        array = array - valor_minimo
+
+    valor_maximo = np.amax(array)
+    if valor_maximo > 255:
+        array = array * 255/valor_maximo
+
+    return array
+
+# Corrige os valores do array por meio de corte
+# Valores negativos vão para 0
+# Valores maiores que 255 vão para 255
+def corrige_valores_por_corte(array):
+    return np.clip(array,0,255)
 
 def rotaciona_array_180_graus(array_entrada, m, n, array_saida):
     for i in range(m):
         for j in range(n):
             array_saida[i][(n-1)-j]=array_entrada[(m-1)-i][j]
 
-def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro):
+def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro, correcao):
 
-    pixels = imagem.load()
+    pixels = np.asarray(imagem,dtype='float64')
 
     ##Rotaciona 180 Graus o filtro
     filtro_out = filtro
@@ -24,7 +47,7 @@ def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro):
     ##Realiza a convulação
     filenameConv = 'output/'
     img = Image.new(imagem.mode, imagem.size, color = 'black')
-    pixels_n= img.load()
+    pixels_n = np.asarray(img,dtype='float64')
 
     for i in range(imagem.size[0]):
         for j in range(imagem.size[1]):
@@ -59,14 +82,16 @@ def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro):
                 coluna = initCounter
                 linha+=1
             
-            # if(resultado>255):
-            #     resultado=255
-            # if(resultado<0):
-            #     resultado=0
-            ##print(resultado*constante)
+            pixels_n[i,j]=resultado*constante
+    
+    print(pixels_n)
+    if(correcao):
+        pixels_n = corrige_valores_por_shift_e_normalizacao(pixels_n)
+    else:
+        pixels_n = corrige_valores_por_corte(pixels_n)
+    print(pixels_n)        
 
-            pixels_n[i,j]=int(resultado*constante)
-
+    img = Image.fromarray(np.uint8(pixels_n))
     img.save(filenameConv+nome+'.jpg')
 
 def mascara_de_nitidez(imagem, nome):
@@ -79,7 +104,7 @@ def mascara_de_nitidez(imagem, nome):
     Filtro_Passa_Baixa_3x3 = [[1, 1, 1],
                               [1, 1, 1],
                               [1, 1, 1]]
-    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"tmp_convolucao_Borrado_3x3",3)
+    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"tmp_convolucao_Borrado_3x3",3,False)
     borrado = Image.open('output/tmp_convolucao_Borrado_3x3.jpg')
     pixels_b= borrado.load()
 
@@ -130,9 +155,9 @@ def main():
 
     imagem = Image.open('assets/lena.tif')
 
-    convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"2A-Passa-baixas",3)
-    convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"2B-Laplaciano",3)
-    mascara_de_nitidez(imagem, "2C-Mascara-de-Nitidez")
+    #convolucaonxn(imagem,Filtro_Passa_Baixa_3x3,Constante_Passa_Baixa_3x3,"2A-Passa-baixas",3,False)
+    convolucaonxn(imagem,Filtro_Laplaciano_3x3,Constante_Laplaciano_3x3,"2B-Laplaciano",3,True)
+    #mascara_de_nitidez(imagem, "2C-Mascara-de-Nitidez")
     return
 
 if __name__ == '__main__':
