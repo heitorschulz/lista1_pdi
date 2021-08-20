@@ -94,7 +94,7 @@ def convolucaonxn(imagem, filtro, constante, nome, tamanho_filtro, correcao):
     img = Image.fromarray(np.uint8(pixels_n))
     img.save(filenameConv+nome+'.jpg')
 
-
+#Aplica a mascara de nitidez
 def mascara_de_nitidez(imagem, nome):
 
     pixels_o = np.asarray(imagem,dtype='float64')

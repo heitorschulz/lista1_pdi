@@ -8,6 +8,8 @@ Matricula: 2016101758
 from PIL import Image
 import math
 
+# Realiza o fatiamento da imagem dentro do limite inferior e superior
+# colocando em 255, e os demais pontos se mantem com mesmo valor.
 def fatiamento(imagem, limite_inferior, limite_superior):
     
     if(limite_inferior < 0 or  limite_inferior > 255):

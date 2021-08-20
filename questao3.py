@@ -8,8 +8,9 @@ Matricula: 2016101758
 from PIL import Image
 import math
 
-
-def exercicio3(imagem,nome):
+# Reduz a imagem eliminando-se alternativamente
+# as linhas e colunas.
+def reducao_imagem(imagem,nome):
     pixels_o = imagem.load()
 
     comprimento= math.floor(imagem.size[0]/2)
@@ -24,6 +25,8 @@ def exercicio3(imagem,nome):
 
     img.save('output/'+nome+'.jpg')
 
+# Proposta de solução: Borrar a imagem primeiro
+# e depois reduzir a imagem, reduzindo o efeito de Aliasing
 def proposta_solucao(imagem,nome):
     from questao2 import convolucaonxn
 
@@ -37,13 +40,13 @@ def proposta_solucao(imagem,nome):
     convolucaonxn(imagem,Filtro_media_3x3,Constante_media_5x5,"tmp_"+nome,5,False)
 
     img_tmp = Image.open('output/tmp_'+nome+'.jpg')
-    exercicio3(img_tmp,nome)
+    reducao_imagem(img_tmp,nome)
     proposta_solucao
 
 def main():
 
     imagem = Image.open('assets/frexp_1.png')
-    exercicio3(imagem,"03-A")
+    reducao_imagem(imagem,"03-A")
     proposta_solucao(imagem,"03-B")
 
     return
